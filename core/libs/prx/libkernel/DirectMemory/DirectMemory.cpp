@@ -451,7 +451,10 @@ void* MapPlaced(void* addr, size_t len, int prot, int flags, size_t alignment) {
     constexpr int GuestMapFixed = 0x10;
     constexpr int GuestMapNoOverwrite = 0x80;
     constexpr int GuestMapNoCoalesce = 0x400000;
-    constexpr int SupportedFlags = GuestMapFixed | GuestMapNoOverwrite | GuestMapNoCoalesce;
+    // 0x8000 is not a documented SCE_KERNEL_MAP_* flag, but the guest libc sets it on its heap
+    // mappings; it changes no behaviour here and is accepted so those mappings do not abort.
+    constexpr int GuestMapUnknownHeap = 0x8000;
+    constexpr int SupportedFlags = GuestMapFixed | GuestMapNoOverwrite | GuestMapNoCoalesce | GuestMapUnknownHeap;
     if ((flags & ~SupportedFlags) != 0) {
         char message[64];
         std::snprintf(message, sizeof(message), "Unsupported memory mapping flags 0x%x", flags);

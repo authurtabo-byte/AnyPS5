@@ -154,9 +154,12 @@ static void CheckInternalNamedFlexibleMapping() {
     Require(sceKernelAvailableFlexibleMemorySize(&available) == 0 && available == before - length);
     Require(sceKernelMunmap(mapped, length) == 0);
     Require(sceKernelAvailableFlexibleMemorySize(&available) == 0 && available == before);
+    void* libcHeap = nullptr;
+    Require(sceKernelMapNamedFlexibleMemoryInternal(&libcHeap, length, 3, 0x8000, "libc heap") == 0 && libcHeap != nullptr);
+    Require(sceKernelMunmap(libcHeap, length) == 0);
     bool rejected = false;
     void* unknown = nullptr;
-    try { sceKernelMapNamedFlexibleMemoryInternal(&unknown, length, 3, 0x8000, "internal mapping"); } catch (const std::exception&) { rejected = true; }
+    try { sceKernelMapNamedFlexibleMemoryInternal(&unknown, length, 3, 0x10000000, "unknown flags"); } catch (const std::exception&) { rejected = true; }
     Require(rejected && unknown == nullptr);
     Require(sceKernelAvailableFlexibleMemorySize(&available) == 0 && available == before);
 }
