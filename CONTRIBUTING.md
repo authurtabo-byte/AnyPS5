@@ -21,6 +21,10 @@ Toolchains are listed in the [build instructions](docs/dev/BUILD.md).
 
 For relinker changes, use the [relinker-only build](docs/dev/BUILD.md#relinker-only) to build and test without third-party submodules, system libraries or a GPU. It also works on macOS. Changes to system libraries or shaders still need the full build and relevant runtime tests.
 
+### Contributions without a game
+
+Many changes can be implemented and verified without a commercial game or console: documentation, developer tools, relinker behavior, and focused regression tests. For system-library changes, prefer a guest test that exercises the API instead of relying on a particular title to reach it. Use the smallest relevant test target, and report any title- or hardware-specific behavior that you could not verify.
+
 ```
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON
 cmake --build build
