@@ -798,7 +798,7 @@ void APS5_VABI _ZN3sce4Json14InitParameter2C1Ev(InitParameter2* self) {
 }
 
 void APS5_VABI _ZN3sce4Json14InitParameter2C2Ev(InitParameter2* self) {
-    *self = {};
+    _ZN3sce4Json14InitParameter2C1Ev(self);
 }
 
 void APS5_VABI _ZN3sce4Json14InitParameter212setAllocatorEPNS0_12MemAllocatorEPv(InitParameter2* self, void* allocator, void* userData) {
@@ -811,6 +811,7 @@ void APS5_VABI _ZN3sce4Json14InitParameter217setFileBufferSizeEm(InitParameter2*
 }
 
 void APS5_VABI _ZN3sce4Json14InitParameter225setSpecialFloatFormatTypeENS0_22SpecialFloatFormatTypeE(InitParameter2* self, SpecialFloatFormatType format) {
+    if (format != SpecialFloatFormatDefault) throw std::invalid_argument("sce::Json::InitParameter2::setSpecialFloatFormatType: unsupported format");
     self->specialFloatFormatType = format;
 }
 
